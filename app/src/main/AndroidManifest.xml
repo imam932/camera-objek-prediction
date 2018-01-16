@@ -1,38 +1,36 @@
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.clarifai.android.starter.api.v2"
->
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.clarifai.android.starter.api.v2">
 
-  <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.CAMERA"/>
-  <uses-feature android:name="android.hardware.camera"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
-  <application
-      android:name=".App"
-      android:allowBackup="true"
-      android:icon="@mipmap/ic_launcher"
-      android:label="@string/app_name"
-      android:supportsRtl="true"
-      android:theme="@style/AppTheme">
+    <uses-feature android:name="android.hardware.camera" />
 
-    <activity
-        android:name=".activity.SpalshScreen"
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Splashscreen"
-        android:screenOrientation="portrait"
-        android:noHistory="true">
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".activity.SpalshScreen"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Splashscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
-    </activity>
-
-    <activity android:name=".activity.MenuAcrivity"></activity>
-    <activity android:name=".activity.RecognizeConceptsActivity" />
-    <activity android:name=".activity.MenuHelp" />
-
-  </application>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.MenuAcrivity" />
+        <activity android:name=".activity.RecognizeConceptsActivity" />
+        <activity android:name=".activity.MenuHelp" />
+        <activity android:name=".activity.CameraActivity"></activity>
+    </application>
 
 </manifest>

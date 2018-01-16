@@ -1,24 +1,32 @@
 package com.clarifai.android.starter.api.v2.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.hardware.Camera;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.clarifai.android.starter.api.v2.R;
 
 public class MenuAcrivity extends AppCompatActivity {
 
+    Button btnCapt, btnLoad, btnData, btnHelp, btnExit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_acrivity);
-        Button ton1 = (Button) findViewById(R.id.button2);
-        Button ton4 = (Button) findViewById(R.id.button4);
-        Button btn5 = (Button) findViewById(R.id.button5);
 
-        ton1.setOnClickListener(new View.OnClickListener() {
+        btnCapt = (Button) findViewById(R.id.button);
+        btnLoad = (Button) findViewById(R.id.button2);
+        btnHelp = (Button) findViewById(R.id.button4);
+        btnExit = (Button) findViewById(R.id.button5);
+
+        btnLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
 // TODO Auto-generated method stub
@@ -27,7 +35,7 @@ public class MenuAcrivity extends AppCompatActivity {
             }
         });
 
-        ton4.setOnClickListener(new View.OnClickListener() {
+        btnHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
 // TODO Auto-generated method stub
@@ -36,7 +44,7 @@ public class MenuAcrivity extends AppCompatActivity {
             }
         });
 
-        btn5.setOnClickListener(new View.OnClickListener() {
+        btnExit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -46,6 +54,15 @@ public class MenuAcrivity extends AppCompatActivity {
             }
         });
 
+        btnCapt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent inte3 = new Intent(MenuAcrivity.this, CameraActivity.class);
+                startActivity(inte3);
+            }
+        });
 
     }
+
+
 }
