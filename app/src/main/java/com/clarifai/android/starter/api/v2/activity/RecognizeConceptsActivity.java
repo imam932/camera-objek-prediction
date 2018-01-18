@@ -1,17 +1,24 @@
 package com.clarifai.android.starter.api.v2.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -26,14 +33,22 @@ import com.clarifai.android.starter.api.v2.ClarifaiUtil;
 import com.clarifai.android.starter.api.v2.R;
 import com.clarifai.android.starter.api.v2.adapter.RecognizeConceptsAdapter;
 
+import java.io.File;
+import java.net.URI;
 import java.util.Collections;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import static android.provider.CalendarContract.CalendarCache.URI;
+
 public final class RecognizeConceptsActivity extends BaseActivity {
 
+  File mFileURI;
   public static final int PICK_IMAGE = 100;
 
   // the list of results that were returned from the API
@@ -53,9 +68,64 @@ public final class RecognizeConceptsActivity extends BaseActivity {
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    FloatingActionButton cam = (FloatingActionButton)  findViewById(R.id.cam);
+    cam.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        captureImage();
+      }
+    });
+
+    // Checking camera availability
+    if (!isDeviceSupportCamera()) {
+      Toast.makeText(getApplicationContext(),  "Camera di device anda tidak tersedia",  Toast.LENGTH_LONG).show();
+      finish();
+    }
   }
 
-  @Override protected void onStart() {
+  /*
+  * * Capturing Camera Image will lauch camera app requrest image capture
+  * */
+  private void captureImage() {
+    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+      mFileURI = getMediaFileName();
+      takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, URI.fromFile(mFileURI));
+      startActivityForResult(takePictureIntent, 100);
+    }
+  }
+
+//  Cek suppoe=rt device
+  private boolean isDeviceSupportCamera() {
+    if (getApplicationContext().getPackageManager().hasSystemFeature(
+            PackageManager.FEATURE_CAMERA)) {
+      // this device has a camera
+       return true;
+    } else {
+      // no camera on this device
+       return false;
+    }
+  }
+
+  private static File getMediaFileName() {
+    // Lokasi External sdcard
+    File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MagicCamera");
+    // Buat directori tidak direktori tidak eksis
+    if (!mediaStorageDir.exists()) {
+      if (!mediaStorageDir.mkdirs()) {
+        Log.d("MagicCamera", "Gagal membuat directory" + "MagicCamera");
+        return null;
+      }
+    }
+      // Membuat nama file
+       String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",  Locale.getDefault()).format(new Date());
+      File mediaFile = null;
+      mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
+
+      return mediaFile;
+    }
+
+    @Override protected void onStart() {
     super.onStart();
 
     resultsList.setLayoutManager(new LinearLayoutManager(this));
